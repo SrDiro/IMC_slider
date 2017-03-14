@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
@@ -17,6 +18,8 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 
 public class FXMLDocumentController implements Initializable {
+
+    private IMC ProgramaPrincipal;
 
     @FXML
     private Label labelTitulo;
@@ -50,26 +53,37 @@ public class FXMLDocumentController implements Initializable {
     private Label labelIMC;
     @FXML
     private ListView<String> listTipoPeso;
-
+    @FXML
+    private Button nuevaVentana;
+    
+    
+    public void setProgramaPrincipal(IMC ProgramaPrincipal) {
+        this.ProgramaPrincipal = ProgramaPrincipal;
+    }
+    
+    @FXML
+    private void ventanaNueva(ActionEvent event) {        
+            ProgramaPrincipal.mostrarVentanaSecundaria();        
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         textFieldAltura.setEditable(false);
         textFieldPeso.setEditable(false);
-        
+
         ObservableList<String> listTipos = FXCollections.observableArrayList("Obesidad", "Sobrepeso", "Normal", "Extrema-delgadez");
         listTipoPeso.setItems(listTipos);
     }
-    
 
     @FXML
     private void seleccionar(MouseEvent event) {
-        
+
         double altura, peso, resultado;
         String alturaFormat, pesoFormat, resultadoFormat;
-        
+
         altura = sliderAltura.getValue();
         peso = sliderPeso.getValue();
-        
+
         if (altura < 40 || altura > 220) {
             this.textFieldAltura.setStyle("-fx-background-color: rgba(255, 89, 89, 0.5);");
         } else {
@@ -81,18 +95,17 @@ public class FXMLDocumentController implements Initializable {
         } else {
             this.textFieldPeso.setStyle("-fx-background-color: rgba(106, 249, 142, 0.5);");
         }
-        
+
         DecimalFormat formateador = new DecimalFormat("00.00");
         alturaFormat = formateador.format(altura);
         pesoFormat = formateador.format(peso);
-        
+
         textFieldAltura.setText(alturaFormat);
         textFieldPeso.setText(pesoFormat);
-        
-        
+
         //CALCULO DEL IMC
-        resultado = peso / ((altura/100) * (altura/100));
-        
+        resultado = peso / ((altura / 100) * (altura / 100));
+
         if (resultado > 30) {
             RBObesidad.fire();
             listTipoPeso.getSelectionModel().select(0);
@@ -106,11 +119,12 @@ public class FXMLDocumentController implements Initializable {
             RBExtremaDelgadez.fire();
             listTipoPeso.getSelectionModel().select(3);
         }
-        
+
         resultadoFormat = formateador.format(resultado);
-        
+
         labelIMC.setText(resultadoFormat);
-        
+
     }
+    
 
 }

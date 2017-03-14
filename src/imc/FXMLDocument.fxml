@@ -60,5 +60,7 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
+      <Button fx:id="nuevaVentana" layoutX="487.0" layoutY="175.0" mnemonicParsing="false" onAction="#ventanaNueva" text="Nueva ventana" />
    </children>
 </AnchorPane>
+
